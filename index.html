@@ -5,6 +5,118 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
-  <body></body>
+  <body>
+    
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <div id="app">
+      <p>{{ count }}</p>
+      <button @click="incrementCount">Increment counting</button>
+      <div >
+        <label for="incrementAmount">Increment by: </label>
+        <input type="number" v-model="incrementAmount"/>
+      </div>
+      
+      <p>{{ films[0].title }}</p><area shape="" coords="" href="" alt="">
+      <p>{{ message2 }}</p>
+      <ul>
+        <li v-for="movie in films">
+          {{ movie.title }} {{ movie.mainActor }} 
+          <p v-if="movie.earnings"> {{ movie.earnings }}</p>
+          <p v-else>earnings unknown</p>
+        </li>
+        
+      </ul>
+      <hr />
+      <ol>
+        <li v-for="actors in films">
+          <p> {{ actors.mainActor }}</p>
+          <button @click="favoriteCharacter(actors.mainActor)">Favorite</button>
+        </li>
+      </ol>
+     
+      
+      <br>
+      <h2 v-if="favoriteList.length === 0">No favorite Character</h2>
+      <h2 v-else>Favorite Characters</h2>
+      <pre>
+        {{ newCharacter }}
+      </pre>
+      <span v-for="(character, index) in characterList">
+        {{ character.name }}{{ index === characterList.length - 1 ? '' : ', '}}
+      </span>
+      <br>
+      <label for="character-name">Name</label>
+      <input type="text" v-model="newCharacter.name" @keyup.enter="addNewCharacter" />
+     
+    </div>
+    
+    <script>
+      const { createApp, ref } = Vue
+    
+      createApp({
+        data() {
+          return {
+            count: 10,
+            incrementAmount: 1,
+            message: 'Hello it works!',
+            message2: 'Hello it works also!',
+            newCharacter: {
+              name: ''
+            },
+            films: [
+            {
+              title: "Example Movie",
+              mainActor: "John Doe",
+              director: "Jane Smith",
+              releaseDate: "2023-10-31",
+              earnings: 123
+            },
+            {
+              title: "Example Movie2",
+              mainActor: "Rober DeNiro",
+              director: "Christopher Nolan",
+              releaseDate: "2020-11-30",
+              earnings: 110
+            },
+            {
+              title: "Example Movie3",
+              mainActor: "Luciano Africano",
+              director: "Alfredo",
+              releaseDate: "2022-12-02",
+            }
+          ],
+          characterList: [
+            {
+              name: 'John'
+            },
+            {
+              name: 'Tommy'
+            },
+            {
+              name: 'Scott'
+            }
+          ],
+          favoriteList: [],
+          }
+        },
+        methods: {
+          
+          incrementCount(){
+            this.count += this.incrementAmount;
+          },
+          addNewCharacter(){
+            this.characterList.push(this.newCharacter)
+          },
+          favoriteCharacter(character){
+            this.favoriteList.push(character)
+          },
+          
+        }
+      }).mount('#app')
+    </script>
+  </body>
 </html>
