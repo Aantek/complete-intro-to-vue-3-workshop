@@ -13,7 +13,14 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <div id="app">
+      <h1>Statistics</h1>
+      <ul>
+        <li v-for="(stat, type) in banderStatistics">{{type }}: {{ stat }}</li>
+      </ul>
+      <h1> {{ incrementTitle }} </h1>
       <p>{{ count }}</p>
+      <p>{{ displayTitle }}</p>
+      <p>{{ optimizedIncrementAmount }}</p>
       <button @click="incrementCount">Increment counting</button>
       <div >
         <label for="incrementAmount">Increment by: </label>
@@ -62,10 +69,12 @@
           return {
             count: 10,
             incrementAmount: 1,
+            incrementTitle: 'Counter Standard',
             message: 'Hello it works!',
             message2: 'Hello it works also!',
             newCharacter: {
-              name: ''
+              name: '',
+              element: []
             },
             films: [
             {
@@ -91,22 +100,60 @@
           ],
           characterList: [
             {
-              name: 'John'
+              name: 'John',
+              element: ['Air', 'Earth', 'Water', 'Fire']
             },
             {
-              name: 'Tommy'
+              name: 'Tommy',
+              element: ['Earth']
             },
             {
-              name: 'Scott'
+              name: 'Scott',
+              element: ['Fire']
             }
           ],
           favoriteList: [],
           }
         },
+        computed: {
+          displayTitle(){
+            if (this.count > 20){
+              return 'Counter Standard - very long'
+            }
+            else{
+              return 'Counter Standard'
+            }
+          },
+          optimizedIncrementAmount(){
+            return this.displayTitle.length * this.incrementAmount
+          },
+
+          banderStatistics(){
+
+            const elements = ['Air', 'Earth', 'Fire', 'Water']
+
+            const statistics = {
+              Air: 0,
+              Earth: 0,
+              Water: 0,
+              Fire: 0 
+            }
+
+            this.characterList.forEach(character => {
+              elements.forEach(element => {
+                if (character.element.indexOf(element) > -1){
+                  statistics[element] += 1
+                }
+              })
+            })
+
+            return statistics
+          }
+        },
         methods: {
           
           incrementCount(){
-            this.count += this.incrementAmount;
+            this.count += this.optimizedIncrementAmount;
           },
           addNewCharacter(){
             this.characterList.push(this.newCharacter)
@@ -115,7 +162,9 @@
             this.favoriteList.push(character)
           },
           
-        }
+        },
+        
+
       }).mount('#app')
     </script>
   </body>
